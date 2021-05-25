@@ -58,7 +58,7 @@ export default function Signup() {
     type: "text",
     value: username,
     onChange: (event) => setUsername(event.target.value),
-    size: "medium",
+    size: "small",
     required: true,
     color: "secondary"
   }), /* @__PURE__ */ React.createElement(TextField, {
@@ -67,7 +67,7 @@ export default function Signup() {
     type: "email",
     value: email,
     onChange: (event) => setEmail(event.target.value),
-    size: "medium",
+    size: "small",
     required: true,
     color: "secondary"
   }), /* @__PURE__ */ React.createElement(TextField, {
@@ -76,7 +76,7 @@ export default function Signup() {
     type: "password",
     value: password,
     onChange: (event) => setPassword(event.target.value),
-    size: "medium",
+    size: "small",
     required: true,
     color: "secondary"
   }), /* @__PURE__ */ React.createElement(TextField, {
@@ -85,7 +85,7 @@ export default function Signup() {
     type: "password",
     value: confirmPassword,
     onChange: (event) => setconfirmPassword(event.target.value),
-    size: "medium",
+    size: "small",
     required: true,
     color: "secondary"
   }), /* @__PURE__ */ React.createElement(Button, {
@@ -93,7 +93,7 @@ export default function Signup() {
     type: "submit"
   }, "Sign up"))), /* @__PURE__ */ React.createElement(Typography, {
     component: Link,
-    to: "/login",
+    to: "/",
     color: "inherit",
     className: classes.register
   }, "You already have an account? Login."));

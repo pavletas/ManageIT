@@ -1,5 +1,6 @@
-import React from "../../_snowpack/pkg/react.js";
-import {makeStyles, Typography, Avatar} from "../../_snowpack/pkg/@material-ui/core.js";
+import React, {useState} from "../../_snowpack/pkg/react.js";
+import {makeStyles, Typography, Avatar, CardActionArea} from "../../_snowpack/pkg/@material-ui/core.js";
+import TaskForm from "../pages/EditTaskForm.js";
 const useStyles = makeStyles(() => ({
   taskCard: {
     display: "flex",
@@ -28,8 +29,17 @@ const useStyles = makeStyles(() => ({
 }));
 export default function Task({task}) {
   const classes = useStyles();
+  const [taskToEdit, setTaskToEdit] = useState(false);
+  const handleCloseDialog = () => {
+    setTaskToEdit(false);
+  };
+  const handleOpenDialog = () => {
+    setTaskToEdit(true);
+  };
   return /* @__PURE__ */ React.createElement("div", {
     className: classes.taskCard
+  }, /* @__PURE__ */ React.createElement(CardActionArea, {
+    onClick: handleOpenDialog
   }, /* @__PURE__ */ React.createElement(Typography, {
     variant: "h6",
     className: classes.id
@@ -38,5 +48,9 @@ export default function Task({task}) {
     className: classes.title
   }, task.title), /* @__PURE__ */ React.createElement(Avatar, {
     className: classes.avatar
-  }, task.asignee[0].toLocaleUpperCase()));
+  }, task.asignee[0].toLocaleUpperCase())), /* @__PURE__ */ React.createElement(TaskForm, {
+    open: taskToEdit,
+    onClose: handleCloseDialog,
+    task
+  }));
 }

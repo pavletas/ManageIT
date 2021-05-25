@@ -3,7 +3,7 @@ import CloseIcon from "../../_snowpack/pkg/@material-ui/icons/Close.js";
 import React, {useState} from "../../_snowpack/pkg/react.js";
 import {projects} from "./Projects.js";
 import {v4 as uuidv4} from "../../_snowpack/pkg/uuid.js";
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   dialogWrapper: {
     paddingBottom: "10px",
     position: "absolute"
@@ -43,7 +43,11 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(3),
     backgroundColor: "#dba0be",
-    left: "-80px"
+    left: "-80px",
+    border: "1px solid #AD3E73",
+    "&:hover": {
+      backgroundColor: "#dba0be"
+    }
   },
   closeButton: {
     position: "absolute",
@@ -94,7 +98,7 @@ export default function CreateProjectForm({open, onClose}) {
   };
   return /* @__PURE__ */ React.createElement(Dialog, {
     open,
-    onClose,
+    onClose: closeAndCleanUp,
     maxWidth: "md",
     classes: {paper: classes.dialogWrapper}
   }, /* @__PURE__ */ React.createElement(Typography, {

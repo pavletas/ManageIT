@@ -36,6 +36,7 @@ export default function Login() {
     const user = users.filter((user2) => user2.username === username);
     const email = user.length ? user[0].email : null;
     authService.login({username, email, password});
+    console.log(username, email, password);
     history.push(history.location.state?.from || "/");
   }
   return /* @__PURE__ */ React.createElement(Container, {
@@ -55,7 +56,7 @@ export default function Login() {
     type: "text",
     value: username,
     onChange: (event) => setUsername(event.target.value),
-    size: "medium",
+    size: "small",
     required: true,
     color: "secondary"
   }), /* @__PURE__ */ React.createElement(TextField, {
@@ -64,7 +65,7 @@ export default function Login() {
     type: "password",
     value: password,
     onChange: (event) => setPassword(event.target.value),
-    size: "medium",
+    size: "small",
     required: true,
     color: "secondary"
   }), /* @__PURE__ */ React.createElement(Button, {

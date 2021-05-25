@@ -14,67 +14,122 @@ export let projects = [
     tasks: [{
       id: "111",
       title: "Implement Log in",
-      asignee: "Petya",
-      label: "New"
+      description: "You have to implement the login page of the application. Please, follow the mockups!",
+      asignee: "Anastasiya Ninova",
+      reporter: "Mariya Petrova",
+      label: "New",
+      estimated: "4d",
+      comments: [],
+      history: []
     }, {
       id: "112",
       title: "Implement Sign up",
-      asignee: "Mariya",
-      label: "New"
+      description: "You have to implement the login page of the application. Please, follow the mockups!",
+      asignee: "Petya Dimitrova",
+      reporter: "Alisa Stefanova",
+      label: "New",
+      estimated: "3d",
+      comments: [],
+      history: []
     }, {
       id: "113",
-      title: "Add profile picture",
-      asignee: "Anna",
-      label: "New"
+      title: "Error 500 when the user clicks Project tasks",
+      description: "When the user clicks over a project task, an error 500 appears. Look at the log files to see the stack trace of the exception.",
+      asignee: "Anastasiya Ninova",
+      reporter: "Petya Dimitrova",
+      label: "New",
+      estimated: "2d 3h",
+      comments: [],
+      history: []
     }, {
       id: "101",
       title: "The settings icon does not appear",
-      asignee: "Ivaylo",
-      label: "Ready For Code Review"
+      description: "When going to the service page, there should be an icon that redirects the user to the settings page for the given asset.",
+      asignee: "Mariya Petrova",
+      reporter: "Anastasiya Ninova",
+      label: "Ready For Code Review",
+      estimated: "1d 4h",
+      comments: [],
+      history: []
     }, {
       id: "103",
       title: "Change the main color of the app",
+      description: "",
       asignee: "Pavleta",
-      label: "New"
+      reporter: "",
+      label: "New",
+      estimated: "",
+      comments: [],
+      history: []
     }, {
       id: "109",
       title: "The link does not redirect to the rigth url",
+      description: "",
       asignee: "Anni",
-      label: "In Testing"
+      reporter: "",
+      label: "In Testing",
+      estimated: "",
+      comments: [],
+      history: []
     }, {
       id: "104",
       title: "Refactor the service class",
+      description: "",
       asignee: "Mimi",
-      label: "Ready For Testing"
+      reporter: "",
+      label: "Ready For Testing",
+      estimated: "",
+      comments: [],
+      history: []
     }, {
       id: "105",
       title: "The username does not change when updating it",
-      asignee: "Aleks",
-      label: "In Progress"
+      description: "When the user edits his username, it does not change. There is no exception that appears.",
+      asignee: "Petya Dimitrova",
+      reporter: "Mariya Petrova",
+      label: "In Progress",
+      estimated: "2d",
+      comments: [],
+      history: []
     }, {
       id: "99",
-      title: "Log in with Google",
-      asignee: "Anna",
-      label: "Closed"
+      title: "FileNotFoundException by loading the devices catalog",
+      description: "By rendering the devices catalog a FileNotFoundException is thrown. Images are not found. Maybe the path to a given image could be wrong. Check it!",
+      asignee: "Anastasiya Ninova",
+      reporter: "Mariya Petrova",
+      label: "Closed",
+      estimated: "4d",
+      comments: [],
+      history: []
     }]
   },
   {
     id: uuidv4(),
     title: "Dungeons And Pythons",
-    description: "This is a simple 2D, turn-based console game filled with dungeons and pythons. There are a hero, enemies, weapons, treasures, and magic! There is an uncomplicated UI where the user can move his hero, take treasures, and fight with the enemies. When he fights all enemies on his path to the end of the dungeon, he will reach the next level or wins the game",
+    description: "This is a simple 2D, turn-based console game filled with dungeons and pythons. There are a hero, enemies, weapons, treasures, and magic! There is an uncomplicated UI where the user can move his hero, take treasures, and fight with the enemies. When he fights all enemies on his path to the end of the dungeon, he will reach the next level or wins the game.",
     edited: "Last updated 1 day ago",
     img: "https://image.api.playstation.com/cdn/EP4365/CUSA07633_00/bEhaJRoN0hdhFTwJEUKh6JmyDVton6JWKDPSXMNoNtZX3EEk90G8XQz0V232d92c.png",
     members: ["Ivan Dimitrov", "Petar Stoyanov", "Vasil Hristov"],
     tasks: [{
       id: "212",
-      title: "Add spell",
-      asignee: "Ivan",
-      label: "New"
+      title: "Change color palette of the application",
+      description: "The colors of the application should be changed. When starting to work on the task, ping Hristo Vasilev - UI Designer.",
+      asignee: "Ivan Dimitrov",
+      reporter: "Vasil Hristov",
+      label: "New",
+      estimated: "1d 2h",
+      comments: [],
+      history: []
     }, {
       id: "213",
-      title: "Add class for enemy",
-      asignee: "Peter",
-      label: "New"
+      title: "Refactor the component regarding the opportunity grid",
+      description: "Code for the opportunity grid is out of date. There is no validations for the main processes.",
+      asignee: "Petar Stoyanov",
+      reporter: "Ivan Dimitrov",
+      label: "New",
+      estimated: "3d",
+      comments: [],
+      history: []
     }]
   },
   {
@@ -87,13 +142,23 @@ export let projects = [
     tasks: [{
       id: "311",
       title: "Add classes for the players and team",
-      asignee: "Denis",
-      label: "New"
+      description: "",
+      asignee: "Nelina Vasileva",
+      reporter: "Valeriya Georgiev",
+      label: "New",
+      estimated: "",
+      comments: [],
+      history: []
     }, {
       id: "312",
       title: "Add button for starting a game",
-      asignee: "Tanya",
-      label: "New"
+      description: "",
+      asignee: "Alex Todorova",
+      reporter: "Cvetelina Stoyanova",
+      label: "New",
+      estimated: "",
+      comments: [],
+      history: []
     }]
   },
   {
@@ -106,13 +171,23 @@ export let projects = [
     tasks: [{
       id: "410",
       title: "Returns 500 error when user click projects tab",
-      asignee: "Georgy",
-      label: "New"
+      description: "",
+      asignee: "Ivona Nacheva",
+      reporter: "Krasimira Milanova",
+      label: "New",
+      estimated: "",
+      comments: [],
+      history: []
     }, {
       id: "442",
       title: "Edit profile page",
+      description: "",
       asignee: "Ivana",
-      label: "New"
+      reporter: "",
+      label: "New",
+      estimated: "",
+      comments: [],
+      history: []
     }]
   },
   {
@@ -125,13 +200,23 @@ export let projects = [
     tasks: [{
       id: "514",
       title: "Fix authentication pop up",
-      asignee: "Denis",
-      label: "New"
+      description: "",
+      asignee: "Nadya Yotova",
+      reporter: "Veronika Maneva",
+      label: "New",
+      estimated: "",
+      comments: [],
+      history: []
     }, {
       id: "532",
       title: "Modifyy header",
-      asignee: "Tanya",
-      label: "New"
+      description: "",
+      asignee: "Katrina Koleva",
+      reporter: "Nadya Yotova",
+      label: "New",
+      estimated: "",
+      comments: [],
+      history: []
     }]
   }
 ];

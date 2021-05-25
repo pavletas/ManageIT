@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px"
   },
   textField: {
-    width: "350px"
+    width: "19rem"
   },
   contentWrapper: {
     overflow: "hidden",
@@ -25,13 +25,10 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "0px"
   },
   descriptionContentWrapper: {
-    width: "350px"
+    width: "21rem"
   },
   addedWrapper: {
     paddingTop: "0px"
-  },
-  addedContentWrapper: {
-    width: "350px"
   },
   textFieldPadding: {
     padding: "10px"
@@ -42,7 +39,11 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(3),
     backgroundColor: "#dba0be",
-    left: "-80px"
+    left: "-80px",
+    border: "1px solid #AD3E73",
+    "&:hover": {
+      backgroundColor: "#dba0be"
+    }
   },
   closeButton: {
     position: "absolute",
@@ -54,8 +55,8 @@ const useStyles = makeStyles((theme) => ({
 export default function EditProjectForm({open, onClose, project}) {
   const [projectName, setProjectName] = useState(project.title);
   const [description, setDescription] = useState(project.description);
-  const classes = useStyles();
   const [members, setMembers] = useState(project.members);
+  const classes = useStyles();
   const defaultOptions = [
     "Oliver Hansen",
     "Van Henry",
@@ -76,9 +77,17 @@ export default function EditProjectForm({open, onClose, project}) {
     returnedProject.members = members;
     onClose();
   };
+  const onEditClose = (event) => {
+    event.preventDefault();
+    let returnedProject = projects.filter((item) => item.id === project.id)[0];
+    setProjectName(returnedProject.title);
+    setDescription(returnedProject.description);
+    setMembers(returnedProject.members);
+    onClose();
+  };
   return /* @__PURE__ */ React.createElement(Dialog, {
     open,
-    onClose,
+    onClose: onEditClose,
     maxWidth: "md",
     classes: {paper: classes.dialogWrapper}
   }, /* @__PURE__ */ React.createElement(Typography, {
@@ -87,7 +96,7 @@ export default function EditProjectForm({open, onClose, project}) {
   }, "Edit Project"), /* @__PURE__ */ React.createElement(IconButton, {
     "aria-label": "close",
     className: classes.closeButton,
-    onClick: onClose
+    onClick: onEditClose
   }, /* @__PURE__ */ React.createElement(CloseIcon, null)), /* @__PURE__ */ React.createElement(DialogContent, {
     className: classes.contentWrapper
   }, /* @__PURE__ */ React.createElement(Grid, {
@@ -107,7 +116,7 @@ export default function EditProjectForm({open, onClose, project}) {
     onChange: (event) => setProjectName(event.target.value),
     variant: "outlined",
     type: "text",
-    className: classes.textField,
+    classes: {root: classes.descriptionContentWrapper},
     placeholder: "Enter project name",
     color: "secondary"
   })), /* @__PURE__ */ React.createElement(Grid, {
@@ -121,6 +130,7 @@ export default function EditProjectForm({open, onClose, project}) {
     id: "members",
     multiple: true,
     value: members,
+    classes: {root: classes.textField},
     onChange: (event) => setMembers(event.target.value)
   }, defaultOptions.map((name) => /* @__PURE__ */ React.createElement(MenuItem, {
     key: name,
@@ -144,8 +154,7 @@ export default function EditProjectForm({open, onClose, project}) {
     color: "secondary"
   })), /* @__PURE__ */ React.createElement(Grid, {
     item: true,
-    xs: 6,
-    className: classes.addedWrapper
+    xs: 6
   }, /* @__PURE__ */ React.createElement(Typography, {
     variant: "h6",
     className: classes.title
@@ -153,6 +162,7 @@ export default function EditProjectForm({open, onClose, project}) {
     disabled: true,
     multiple: true,
     native: true,
+    classes: {root: classes.textField},
     inputProps: {
       id: "select-multiple-native"
     }
