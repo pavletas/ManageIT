@@ -60,7 +60,7 @@ export default function Signup() {
             type="text"
             value={username}
             onChange={(event: any) => setUsername(event.target.value)}
-            size="medium"
+            size="small"
             required
             color="secondary"
           />
@@ -70,7 +70,7 @@ export default function Signup() {
             type="email"
             value={email}
             onChange={(event: any) => setEmail(event.target.value)}
-            size="medium"
+            size="small"
             required
             color="secondary"
           />
@@ -80,7 +80,7 @@ export default function Signup() {
             type="password"
             value={password}
             onChange={(event: any) => setPassword(event.target.value)}
-            size="medium"
+            size="small"
             required
             color="secondary"
           />
@@ -90,7 +90,7 @@ export default function Signup() {
             type="password"
             value={confirmPassword}
             onChange={(event: any) => setconfirmPassword(event.target.value)}
-            size="medium"
+            size="small"
             required
             color="secondary"
           />

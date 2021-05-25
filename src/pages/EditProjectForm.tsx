@@ -48,7 +48,11 @@ const useStyles = makeStyles(theme => ({
     button: {
         margin: theme.spacing(3),
         backgroundColor: '#dba0be',
-        left: '-80px'
+        left: '-80px',
+        border: '1px solid #AD3E73',
+        '&:hover': {
+            backgroundColor: '#dba0be'
+          }
     },
     closeButton: {
         position: 'absolute',

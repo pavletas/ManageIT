@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { AppBar, Typography, makeStyles, Toolbar, IconButton, Avatar, Box, Menu, MenuItem, CardActionArea } from '@material-ui/core';
+import { AppBar, Typography, makeStyles, Toolbar, IconButton, Avatar, Box, Menu, MenuItem, CardActionArea, Link } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import useCurrentUser from '../contexts/CurrentUser';
-import { Link, useHistory } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import authService, { UserAuth } from '../services/AuthService';
 
 const useStyles = makeStyles(() => ({
@@ -24,6 +24,9 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  title: {
+    fontSize: '28px'
   }
 }));
 
@@ -89,14 +92,13 @@ export default function Header() {
               open={!!menuEl}
               onClose={() => setMenuEl(null)}
             >
-              <MenuItem onClick={showProjects} component={Link} to="/projects">Projects</MenuItem>
-              <MenuItem onClick={showTeams} component={Link} to="/teams">Teams</MenuItem>
+              <MenuItem onClick={showProjects} component={RouterLink} to="/projects">Projects</MenuItem>
+              <MenuItem onClick={showTeams} component={RouterLink} to="/teams">Teams</MenuItem>
             </Menu>
           </>
         }
-        {user && <> <CardActionArea onClick={() => history.push(`/projects`)}>
-          <Typography variant="h4">ManageIT</Typography>
-        </CardActionArea>
+        {user && <>
+          <Link component={RouterLink} to="/projects" color='inherit' underline='none' className={classes.title}>ManageIT</Link>
         </>
         }
         {!user && <>
@@ -127,8 +129,8 @@ export default function Header() {
               open={!!anchorEl}
               onClose={() => setAnchorEl(null)}
             >
-              <MenuItem onClick={showUserProfile} component={Link} to="/profile">User Profile</MenuItem>
-              <MenuItem onClick={logout} component={Link} to="/">Logout</MenuItem>
+              <MenuItem onClick={showUserProfile} component={RouterLink} to="/profile">User Profile</MenuItem>
+              <MenuItem onClick={logout} component={RouterLink} to="/">Logout</MenuItem>
             </Menu>
           </>
         }

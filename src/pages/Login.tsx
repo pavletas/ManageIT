@@ -43,6 +43,7 @@ export default function Login() {
     const email = user.length ? user[0].email : null;
 
     authService.login({ username, email, password });
+    console.log(username, email, password);
 
     history.push(history.location.state?.from || '/');
   }
@@ -58,7 +59,7 @@ export default function Login() {
             type="text"
             value={username}
             onChange={(event: any) => setUsername(event.target.value)}
-            size="medium"
+            size="small"
             required
             color="secondary"
           />
@@ -68,11 +69,11 @@ export default function Login() {
             type="password"
             value={password}
             onChange={(event: any) => setPassword(event.target.value)}
-            size="medium"
+            size="small"
             required
             color="secondary"
           />
-          <Button className={classes.signIn} type="submit" onClick={() => history.push(`/projects`)}>Sign in</Button>
+          <Button className={classes.signIn} type="submit">Sign in</Button>
         </Box>
       </form>
       <Typography component={Link} to="/signup" color="inherit" className={classes.register}>
