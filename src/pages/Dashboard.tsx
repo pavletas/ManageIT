@@ -49,9 +49,10 @@ export default function Dashboard() {
     <Grid container spacing={0} classes={{ root: classes.gridPadding }}>
       <Grid item xs={12} classes={{ root: classes.gridItem }}>
         <Grid container justify="center" spacing={0} classes={{ root: classes.gridPadding }}>
-          {['New', 'In Progress', 'Ready For Code Review', 'Ready For Testing', 'In Testing', 'Closed'].map((value) => (
+          {['New', 'In Progress', 'Ready For Code Review', 
+          'Ready For Testing', 'In Testing', 'Closed'].map((value) => (
             <Grid key={value} item className={classes.tasks}>
-              <Tasks label={value} tasks={currentProject[0].tasks} />
+              <Tasks label={value} tasks={currentProject[0].tasks} project={currentProject[0]} />
             </Grid>
           ))}
         </Grid>

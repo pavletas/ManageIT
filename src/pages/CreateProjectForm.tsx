@@ -105,7 +105,6 @@ export default function CreateProjectForm({ open, onClose }: formProps) {
         setParamsToEmpty();
         onClose();
     };
-
     const closeAndCleanUp = () => {
         setParamsToEmpty();
         onClose();

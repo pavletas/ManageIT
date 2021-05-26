@@ -1,39 +1,159 @@
-import { Avatar, Dialog, DialogContent, Grid, IconButton, TextField, Typography } from "@material-ui/core";
+import { Avatar, Box, Dialog, DialogContent, Grid, IconButton, makeStyles, TextField, Typography, InputBase, FormControl, Select, Button, DialogTitle, InputLabel, DialogActions, Input } from "@material-ui/core";
 import React, { useState } from "react";
 import CloseIcon from '@material-ui/icons/Close';
 import { useStyles } from "./CreateProjectForm";
-import type { TaskModel } from "../components/Project";
+import type { ProjectProps, TaskModel } from "../components/Project";
 import Comment from "../components/Comment";
 
 export interface taskFormProps {
     open: boolean;
     onClose: () => void;
     task: TaskModel;
+    project: ProjectProps;
 };
 
-export default function EditTaskForm({ open, onClose, task }: taskFormProps) {
+const useCustomStyles = makeStyles((theme) => ({
+    inputContainer: {
+        display: 'flex',
+        width: '100%',
+        marginBottom: '15px'
+    },
+    icon: {
+        padding: '10px',
+        background: 'dodgerblue',
+        color: 'white',
+        minWidth: '50px',
+        textAlign: 'center'
+    },
+    inputField: {
+        width: '100%',
+        padding: '10px',
+        outline: 'none'
+    },
+    avatar: {
+        backgroundColor: '#ffcc66',
+        marginLeft: '2rem'
+    },
+    userBox: {
+        display: 'flex',
+        justifyContent: 'left',
+        alignItems: 'center'
+    },
+    header: {
+        fontSize: '1.10rem'
+    },
+    muiAvatar: {
+        width: '30px',
+        height: '30px'
+    },
+    muiMargin: {
+        margin: '1rem'
+    },
+    alignLeftLabel: {
+        left: '5rem'
+    },
+    alignLeftEstimate: {
+        left: '4rem'
+    },
+    titleSize: {
+        fontSize: '1.65rem'
+    },
+    description: {
+        top: '-5rem',
+        position: 'relative'
+    },
+    gridPadding: {
+        padding: '0.7rem'
+    },
+    formContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
+    button: {
+        right: '-12rem',
+        margin: theme.spacing(3),
+        backgroundColor: '#dba0be',
+        border: '1px solid #AD3E73',
+        '&:hover': {
+            backgroundColor: '#dba0be'
+        }
+    },
+}));
+
+export default function EditTaskForm({ open, onClose, task, project }: taskFormProps) {
     const classes = useStyles();
+    const myClasses = useCustomStyles();
     const [id] = useState(task.id);
     const [title] = useState(task.title);
     const [description, setDescription] = useState(task.description);
     const [assignee, setAssignee] = useState(task.asignee);
     const [reporter, setReporter] = useState(task.reporter);
-    const [label, seLabel] = useState(task.label);
+    const [label, setLabel] = useState(task.label);
     const [estimate, setEstimate] = useState(task.estimated);
+    const [history, setHistory] = useState(task.history);
+    const [comments, setComments] = useState(task.comments);
+    const [openButtonLabel, setOpenButtonLabel] = React.useState(false);
+
+    const labels: string[] = ['New', 'In Progress', 'Ready For Code Review', 'Ready For Testing', 'In Testing', 'Closed'];
 
     const closeAndCleanUp = () => {
+        let returnedtask: TaskModel = project.tasks.filter(item => item.id === id)[0];
+        setDescription(returnedtask.description);
+        setAssignee(returnedtask.asignee);
+        setReporter(returnedtask.reporter);
+        setLabel(returnedtask.label);
+        setEstimate(returnedtask.estimated);
         onClose();
     }
 
+    const handleClickOpen = () => {
+        setOpenButtonLabel(true);
+    };
+
+    const handleClose = () => {
+        setOpenButtonLabel(false);
+    };
+
+    const onButtonFormClose = (event: any) => {
+        event.preventDefault();
+        let returnedtask: TaskModel = project.tasks.filter(item => item.id === id)[0];
+        setLabel(returnedtask.label);
+        handleClose();
+    }
+
+    const onButtonFormSubmit = (event: any) => {
+        event.preventDefault();
+        let returnedtask: TaskModel = project.tasks.filter(item => item.id === id)[0];
+        returnedtask.label = label;
+        setLabel(label);
+        handleClose();
+    }
+
+    const saveTask = (event: any) => {
+        event.preventDefault();
+        let returnedTask: TaskModel = project.tasks.filter(item => item.id === id)[0];
+        returnedTask.description = description;
+        returnedTask.asignee = assignee;
+        returnedTask.reporter = reporter;
+        returnedTask.estimated = estimate;
+        returnedTask.label = label;
+        returnedTask.comments = comments;
+        onClose();
+    };
+
     return (
         <Dialog open={open} onClose={closeAndCleanUp} maxWidth="md" classes={{ paper: classes.dialogWrapper }}>
-            <Typography variant="h4" className={classes.titleWrapper}>#{task.id} {task.title}</Typography>
+            <Typography variant="h4" className={classes.titleWrapper} classes={{ root: myClasses.titleSize }}>#{id} {title}</Typography>
             <IconButton aria-label="close" className={classes.closeButton} onClick={closeAndCleanUp}>
                 <CloseIcon />
             </IconButton>
-            <DialogContent className={classes.contentWrapper}>
-                <Grid container spacing={4} alignItems='flex-end'>
-                    <Grid item xs={8}>
+            <DialogContent className={classes.contentWrapper} >
+                <Grid container spacing={4} alignItems='flex-end' classes={{ root: myClasses.gridPadding }}>
+                    <Grid item xs={7} classes={{ root: myClasses.description }}>
                         <Typography variant="h6" className={classes.title}>Description</Typography>
                         <TextField
                             value={description}
@@ -47,15 +167,88 @@ export default function EditTaskForm({ open, onClose, task }: taskFormProps) {
                             color="secondary"
                         />
                     </Grid>
-                    <Grid item xs={4}>
-                        <Avatar>{task.asignee[0].toLocaleUpperCase()}</Avatar>
-                        <TextField id="input-with-icon-grid" label="With a grid" />
+                    <Grid item xs={5}>
+                        <Box className={myClasses.userBox}>
+                            <Typography variant="h6" className={classes.title}
+                                classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Assignee</Typography>
+                            <Avatar className={myClasses.avatar} classes={{ root: myClasses.muiAvatar }}>{assignee && <>{assignee[0].toUpperCase()} </>}</Avatar>
+                            <InputBase
+                                defaultValue={assignee}
+                                inputProps={{ 'aria-label': 'naked' }}
+                                onChange={(event: any) => setAssignee(event.target.value)}
+                            />
+                        </Box>
+                        <Box className={myClasses.userBox}>
+                            <Typography variant="h6" className={classes.title}
+                                classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Reporter</Typography>
+                            <Avatar className={myClasses.avatar} classes={{ root: myClasses.muiAvatar }}>{reporter && <>{reporter[0].toUpperCase()} </>}</Avatar>
+                            <InputBase
+                                defaultValue={reporter}
+                                inputProps={{ 'aria-label': 'naked' }}
+                                onChange={(event: any) => setReporter(event.target.value)}
+                            />
+                        </Box>
+                        <Box className={myClasses.userBox}>
+                            <Typography variant="h6" className={classes.title}
+                                classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Label</Typography>
+                            <Button onClick={handleClickOpen} classes={{ root: myClasses.alignLeftLabel }}>{label}</Button>
+                            <Dialog disableBackdropClick disableEscapeKeyDown open={openButtonLabel} onClose={handleClose}>
+                                <DialogContent>
+                                    <form className={myClasses.formContainer}>
+                                        <FormControl className={myClasses.formControl}>
+                                            <InputLabel htmlFor="demo-dialog-native">Label</InputLabel>
+                                            <Select
+                                                native
+                                                value={label}
+                                                onChange={(event: any) => setLabel(event.target.value)}
+                                            >
+                                                {labels.map((item) => (
+                                                    <option key={item} value={item} style={{ color: 'black' }}>
+                                                        {item}
+                                                    </option>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </form>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={onButtonFormClose} color="primary">
+                                        Cancel</Button>
+                                    <Button onClick={onButtonFormSubmit} color="primary">
+                                        Submit</Button>
+                                </DialogActions>
+                            </Dialog>
+                        </Box>
+                        <Box className={myClasses.userBox}>
+                            <Typography variant="h6" className={classes.title}
+                                classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Estimate</Typography>
+                            <InputBase
+                                defaultValue={estimate}
+                                inputProps={{ 'aria-label': 'naked' }}
+                                classes={{ root: myClasses.alignLeftEstimate }}
+                                onChange={(event: any) => setEstimate(event.target.value)}
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={7} classes={{ root: myClasses.description }}>
+                        <Typography variant="h6" className={classes.title}>Activity</Typography>
+                        <TextField
+                            value={comments}
+                            onChange={(event: any) => setComments(event.target.value)}
+                            className={classes.descriptionContentWrapper}
+                            variant="outlined"
+                            multiline
+                            rows={7}
+                            rowsMax={9}
+                            color="secondary"
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Button onClick={saveTask} variant="contained" size="large" classes={{ root: myClasses.button }}>
+                            Submit</Button>
                     </Grid>
                 </Grid>
-                <Grid item xs={8}>
-                    <Comment task={task} />
-                </Grid>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     );
 }

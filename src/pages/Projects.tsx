@@ -20,7 +20,7 @@ export let projects: ProjectProps[] = [
       reporter: 'Mariya Petrova',
       label: 'New',
       estimated: '4d',
-      comments: [],
+      comments: ['I cannot find the mockup for login page :('],
       history: []
     }, {
       id: '112',

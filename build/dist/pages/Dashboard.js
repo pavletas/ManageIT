@@ -54,7 +54,14 @@ export default function Dashboard() {
     justify: "center",
     spacing: 0,
     classes: {root: classes.gridPadding}
-  }, ["New", "In Progress", "Ready For Code Review", "Ready For Testing", "In Testing", "Closed"].map((value) => /* @__PURE__ */ React.createElement(Grid, {
+  }, [
+    "New",
+    "In Progress",
+    "Ready For Code Review",
+    "Ready For Testing",
+    "In Testing",
+    "Closed"
+  ].map((value) => /* @__PURE__ */ React.createElement(Grid, {
     key: value,
     item: true,
     className: classes.tasks

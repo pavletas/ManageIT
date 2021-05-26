@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import type { TaskModel } from './Project';
+import type { ProjectProps, TaskModel } from './Project';
 import { makeStyles, Typography, Avatar, CardActionArea } from '@material-ui/core';
 import TaskForm from '../pages/EditTaskForm';
 
 export interface TaskProps {
   task: TaskModel;
+  project: ProjectProps
 }
 
 const useStyles = makeStyles(() => ({
@@ -34,7 +35,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export default function Task({ task }: TaskProps) {
+export default function Task({ task, project }: TaskProps) {
   const classes = useStyles();
   const [taskToEdit, setTaskToEdit] = useState(false);
 
@@ -53,7 +54,7 @@ export default function Task({ task }: TaskProps) {
         <Typography variant="body1" className={classes.title}>{task.title}</Typography>
         <Avatar className={classes.avatar}>{task.asignee[0].toLocaleUpperCase()}</Avatar>
       </CardActionArea>
-      <TaskForm open={taskToEdit} onClose={handleCloseDialog} task={task} />
+      <TaskForm open={taskToEdit} onClose={handleCloseDialog} task={task} project={project} />
     </div>
   );
 }
