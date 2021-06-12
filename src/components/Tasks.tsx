@@ -28,7 +28,7 @@ export default function Tasks({ label, tasks, project}: TasksProps) {
   return (
     <>
       <Typography variant="h6" className={classes.label}>{label}</Typography>
-      {currentTasks.map(task => <Task task={task} project={project} />)}
+      {currentTasks.map(task => <Task task={task} project={project} tasks={tasks} />)}
     </>
   );
 }

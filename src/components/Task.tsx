@@ -5,7 +5,8 @@ import TaskForm from '../pages/EditTaskForm';
 
 export interface TaskProps {
   task: TaskModel;
-  project: ProjectProps
+  project: ProjectProps;
+  tasks: TaskModel[];
 }
 
 const useStyles = makeStyles(() => ({
@@ -35,7 +36,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export default function Task({ task, project }: TaskProps) {
+export default function Task({ task, project, tasks }: TaskProps) {
   const classes = useStyles();
   const [taskToEdit, setTaskToEdit] = useState(false);
 
@@ -54,7 +55,7 @@ export default function Task({ task, project }: TaskProps) {
         <Typography variant="body1" className={classes.title}>{task.title}</Typography>
         <Avatar className={classes.avatar}>{task.asignee[0].toLocaleUpperCase()}</Avatar>
       </CardActionArea>
-      <TaskForm open={taskToEdit} onClose={handleCloseDialog} task={task} project={project} />
+      <TaskForm open={taskToEdit} onClose={handleCloseDialog} task={task} project={project} tasks={tasks} />
     </div>
   );
 }

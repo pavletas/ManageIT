@@ -93,7 +93,7 @@ export default function CreateProjectForm({ open, onClose }: formProps) {
     const saveProject = (event: any) => {
         event.preventDefault();
         projects.push({
-            id: uuidv4(),
+            id: Math.floor(Math.random() * (999 - 100 + 1) + 100) + '',
             title: projectName,
             description: description,
             edited: "Last updated 2 sec ago",
@@ -105,6 +105,7 @@ export default function CreateProjectForm({ open, onClose }: formProps) {
         setParamsToEmpty();
         onClose();
     };
+    
     const closeAndCleanUp = () => {
         setParamsToEmpty();
         onClose();

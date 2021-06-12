@@ -1,8 +1,12 @@
+import { Dashboard } from '@material-ui/icons';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('root'),
+  <div>
+    <App />,
+    <Dashboard />
+  </div>,
+  document.getElementById('root')
 );

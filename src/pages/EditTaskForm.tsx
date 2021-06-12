@@ -8,12 +8,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useStyles } from "./CreateProjectForm";
 import type { ProjectProps, TaskModel } from "../components/Project";
 import useCurrentUser from "../contexts/CurrentUser";
+import { projects } from './Projects';
 
 export interface taskFormProps {
     open: boolean;
     onClose: () => void;
     task: TaskModel;
     project: ProjectProps;
+    tasks: TaskModel[];
 };
 
 const useCustomStyles = makeStyles((theme) => ({
@@ -98,7 +100,7 @@ const useCustomStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function EditTaskForm({ open, onClose, task, project }: taskFormProps) {
+export default function EditTaskForm({ open, onClose, task, project, tasks }: taskFormProps) {
     const classes = useStyles();
     const myClasses = useCustomStyles();
     const [id] = useState(task.id);
@@ -183,12 +185,19 @@ export default function EditTaskForm({ open, onClose, task, project }: taskFormP
     const saveTask = (event: any) => {
         event.preventDefault();
         let returnedTask: TaskModel = project.tasks.filter(item => item.id === id)[0];
+        let taskIndex: number = tasks.indexOf(returnedTask);
+
         returnedTask.description = description;
         returnedTask.asignee = assignee;
         returnedTask.reporter = reporter;
         returnedTask.estimated = estimate;
         returnedTask.label = label;
-        returnedTask.comments = comments;
+
+        let filteredProject = projects.filter(item => item.id === project.id)[0];
+        let projectIndex: number = projects.indexOf(filteredProject);
+        projects[projectIndex].tasks.slice(taskIndex, 1); 
+        projects[projectIndex].tasks.push(returnedTask);
+
         onClose();
     };
 
