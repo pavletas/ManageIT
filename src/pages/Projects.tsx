@@ -3,6 +3,7 @@ import { makeStyles, Container, Button } from '@material-ui/core';
 import Project, { ProjectProps } from '../components/Project';
 import CreateProjectForm from './CreateProjectForm';
 import { v4 as uuidv4 } from 'uuid';
+import useCurrentUser from '../contexts/CurrentUser';
 
 export let projects: ProjectProps[] = [
   {
@@ -245,6 +246,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Projects() {
   const classes = useStyles();
+  const user = useCurrentUser();
   const [newProject, setNewProject] = useState(false);
 
   const handleCloseDialog = () => {
@@ -255,19 +257,22 @@ export default function Projects() {
     setNewProject(true);
   };
 
+  console.log(user?.type);
   return (
     <>
       <Container maxWidth="lg">
-        <Button
-          size="large"
-          onClick={handleOpenDialog}
-          className={classes.button}
-        >
-          Add new project
-        </Button>
-        <CreateProjectForm
-          open={newProject}
-          onClose={handleCloseDialog} />
+        {user?.type === 'sa' && <>
+          <Button
+            size="large"
+            onClick={handleOpenDialog}
+            className={classes.button}
+          >
+            Add new project
+                </Button>
+          <CreateProjectForm
+            open={newProject}
+            onClose={handleCloseDialog} /></>
+        }
         <div className={classes.projects}>
           {projects && projects.map(project =>
             <Project

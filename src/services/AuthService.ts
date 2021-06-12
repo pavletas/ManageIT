@@ -2,9 +2,25 @@ export interface UserAuth {
   username: string;
   email: string | null;
   password: string;
+  type: string | null;
 }
 
-export const users: UserAuth[] = [];
+export const users: UserAuth[] = [{
+  username: 'Yoanna',
+  email: 'anni@gmail.com',
+  password: 'test123456',
+  type: 'sa'
+}, {
+  username: 'Maria',
+  email: 'mimi@gmail.com',
+  password: 'test123456',
+  type: 'qa'
+}, {
+  username: 'Pavleta',
+  email: 'pufi@gmail.com',
+  password: 'test123456',
+  type: 'dev'
+}];
 
 type UserChangeHandler = (user: UserAuth | null) => void;
 

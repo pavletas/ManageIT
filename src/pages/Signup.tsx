@@ -44,7 +44,7 @@ export default function Signup() {
   async function submit(event: FormEvent) {
     event.preventDefault();
 
-    authService.register({ username, email, password });
+    authService.register({ username, email, password, type: 'dev' });
 
     history.push(history.location.state?.from || '/');
   }
