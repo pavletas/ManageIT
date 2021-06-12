@@ -39,11 +39,11 @@ export default function Login() {
   async function submit(event: FormEvent) {
     event.preventDefault();
 
-    const user = users.filter(user => user.username === username)
+    const user = users.filter(user => user.username === username);
     const email = user.length ? user[0].email : null;
+    const type = user.length ? user[0].type : null;
 
-    authService.login({ username, email, password });
-    console.log(username, email, password);
+    authService.login({ username, email, password, type });
 
     history.push(history.location.state?.from || '/');
   }
