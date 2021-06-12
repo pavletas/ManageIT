@@ -229,7 +229,7 @@ export default function EditTaskForm({ open, onClose, project }: taskFormProps) 
                     </Grid>
                     <Grid item xs={7}></Grid>
                     <Grid item xs={5}>
-                        <Button onClick={saveTask} variant="contained" size="large" classes={{ root: myClasses.button }}>
+                        <Button type="submit" onClick={saveTask} variant="contained" size="large" classes={{ root: myClasses.button }}>
                             Submit</Button>
                     </Grid>
                 </Grid>

@@ -7,6 +7,8 @@ export interface TaskProps {
   task: TaskModel;
   project: ProjectProps;
   tasks: TaskModel[];
+  value: any;
+  onChange: (newValue: any) => void;
 }
 
 const useStyles = makeStyles(() => ({
@@ -36,9 +38,15 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export default function Task({ task, project, tasks }: TaskProps) {
+export default function Task({ task, project, tasks, onChange }: TaskProps) {
   const classes = useStyles();
   const [taskToEdit, setTaskToEdit] = useState(false);
+  const [value, setValue] = React.useState("");
+
+  function handleChange(newValue: any) {
+    onChange(newValue);
+    setValue(newValue);
+  }
 
   const handleCloseDialog = () => {
     setTaskToEdit(false);
@@ -55,7 +63,7 @@ export default function Task({ task, project, tasks }: TaskProps) {
         <Typography variant="body1" className={classes.title}>{task.title}</Typography>
         <Avatar className={classes.avatar}>{task.asignee[0].toLocaleUpperCase()}</Avatar>
       </CardActionArea>
-      <TaskForm open={taskToEdit} onClose={handleCloseDialog} task={task} project={project} tasks={tasks} />
+      <TaskForm open={taskToEdit} value={value} onChange={handleChange} onClose={handleCloseDialog} task={task} project={project} tasks={tasks} />
     </div>
   );
 }

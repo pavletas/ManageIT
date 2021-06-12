@@ -7,6 +7,8 @@ export interface TasksProps {
   label: string;
   tasks: TaskModel[];
   project: ProjectProps;
+  value: any;
+  onChange: (newValue: any) => void;
 }
 
 const useStyles = makeStyles(() => ({
@@ -20,15 +22,21 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export default function Tasks({ label, tasks, project}: TasksProps) {
+export default function Tasks({ label, tasks, project, onChange}: TasksProps) {
   const classes = useStyles();
+  const [value, setValue] = React.useState("");
+
+  function handleChange(newValue: any) {
+    onChange(newValue);
+    setValue(newValue);
+  }
 
   const currentTasks = tasks.filter(task => task.label === label);
 
   return (
     <>
       <Typography variant="h6" className={classes.label}>{label}</Typography>
-      {currentTasks.map(task => <Task task={task} project={project} tasks={tasks} />)}
+      {currentTasks.map(task => <Task value={value} onChange={handleChange} task={task} project={project} tasks={tasks} />)}
     </>
   );
 }

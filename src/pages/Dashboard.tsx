@@ -54,6 +54,11 @@ export default function Dashboard() {
   const classes = useStyles();
   const { id } = useParams<{ id: string }>();
   const [taskToCreate, setTaskToCreate] = useState(false);
+  const [value, setValue] = React.useState("");
+
+  function handleChange(newValue: any) {
+    setValue(newValue);
+  }
 
   const currentProject = projects.filter(project => project.id === id)[0];
 
@@ -80,7 +85,7 @@ export default function Dashboard() {
             {['New', 'In Progress', 'Ready For Code Review',
               'Ready For Testing', 'In Testing', 'Closed'].map((value) => (
                 <Grid key={value} item className={classes.tasks}>
-                  <Tasks label={value} tasks={tasks} project={currentProject} />
+                  <Tasks value={value} onChange={handleChange} label={value} tasks={tasks} project={currentProject} />
                 </Grid>
               ))}
           </Grid>

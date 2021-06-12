@@ -1,13 +1,12 @@
 import {
   Avatar, Box, Dialog, DialogContent, Grid, IconButton, makeStyles,
   TextField, Typography, InputBase, FormControl, Select, Button,
-  InputLabel, DialogActions, Tab, Tabs
+  InputLabel, DialogActions,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import CloseIcon from '@material-ui/icons/Close';
 import { useStyles } from "./CreateProjectForm";
 import type { ProjectProps, TaskModel } from "../components/Project";
-import useCurrentUser from "../contexts/CurrentUser";
 import { projects } from './Projects';
 import Activities from "../components/Activities";
 
@@ -17,6 +16,8 @@ export interface taskFormProps {
   task: TaskModel;
   project: ProjectProps;
   tasks: TaskModel[];
+  value: any;
+  onChange: (newValue: any) => void;
 };
 
 const useCustomStyles = makeStyles((theme) => ({
@@ -116,7 +117,7 @@ const useCustomStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function EditTaskForm({ open, onClose, task, project, tasks }: taskFormProps) {
+export default function EditTaskForm({ open, onClose, task, project, tasks, onChange }: taskFormProps) {
   const classes = useStyles();
   const myClasses = useCustomStyles();
   const [id] = useState(task.id);
@@ -126,19 +127,15 @@ export default function EditTaskForm({ open, onClose, task, project, tasks }: ta
   const [reporter, setReporter] = useState(task.reporter);
   const [label, setLabel] = useState(task.label);
   const [estimate, setEstimate] = useState(task.estimated);
-  const [history, setHistory] = useState(task.history);
-  const [comment, setComment] = useState('');
-  const [comments, setComments] = useState(task.comments);
   const [openButtonLabel, setOpenButtonLabel] = React.useState(false);
   const [openButtonReporter, setOpenButtonReporter] = React.useState(false);
   const [openButtonAssignee, setOpenButtonAssignee] = React.useState(false);
   const [value, setValue] = React.useState("");
-  const user = useCurrentUser();
 
   function handleChange(newValue: any) {
     setValue(newValue);
   }
-  
+
   const labels: string[] = ['New', 'In Progress', 'Ready For Code Review', 'Ready For Testing', 'In Testing', 'Closed'];
 
   const closeAndCleanUp = () => {
@@ -207,21 +204,16 @@ export default function EditTaskForm({ open, onClose, task, project, tasks }: ta
   const saveTask = (event: any) => {
     event.preventDefault();
     let returnedTask: TaskModel = project.tasks.filter(item => item.id === id)[0];
-    let taskIndex: number = tasks.indexOf(returnedTask);
 
+    console.log('here save');
     returnedTask.description = description;
     returnedTask.asignee = assignee;
     returnedTask.reporter = reporter;
     returnedTask.estimated = estimate;
     returnedTask.label = label;
 
-    let filteredProject = projects.filter(item => item.id === project.id)[0];
-    let projectIndex: number = projects.indexOf(filteredProject);
-    projects[projectIndex].tasks.slice(taskIndex, 1);
-    projects[projectIndex].tasks.push(returnedTask);
-
+    onChange(event);
     onClose();
-    window.location.reload();
   };
 
   return (
@@ -231,136 +223,138 @@ export default function EditTaskForm({ open, onClose, task, project, tasks }: ta
         <CloseIcon />
       </IconButton>
       <DialogContent className={classes.contentWrapper} >
-        <Grid container spacing={4} alignItems='flex-end' classes={{ root: myClasses.gridPadding }}>
-          <Grid item xs={7} classes={{ root: myClasses.description }}>
-            <Typography variant="h6" className={classes.title}>Description</Typography>
-            <TextField
-              value={description}
-              onChange={(event: any) => setDescription(event.target.value)}
-              placeholder="Describe the business logic of the project"
-              className={classes.descriptionContentWrapper}
-              variant="outlined"
-              multiline
-              rows={7}
-              rowsMax={9}
-              color="secondary"
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <Box className={myClasses.userBox}>
-              <Typography variant="h6" className={classes.title}
-                classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Assignee</Typography>
-              <Avatar className={myClasses.avatar} classes={{ root: myClasses.muiAvatar }}>{assignee && <>{assignee[0].toUpperCase()} </>}</Avatar>
-              <Button onClick={() => setOpenButtonAssignee(true)}>{assignee}</Button>
-              <Dialog disableBackdropClick disableEscapeKeyDown open={openButtonAssignee}
-                onClose={() => setOpenButtonAssignee(false)}>
-                <DialogContent>
-                  <form className={myClasses.formContainer}>
-                    <FormControl className={myClasses.formControl}>
-                      <InputLabel htmlFor="demo-dialog-native">Assignee</InputLabel>
-                      <Select
-                        native
-                        value={assignee}
-                        onChange={(event: any) => setAssignee(event.target.value)}
-                      >
-                        {project.members.map((item) => (
-                          <option key={item} value={item} style={{ color: 'black' }}>
-                            {item}
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </form>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={onButtonFormAssigneeClose} color="primary">
-                    Cancel</Button>
-                  <Button onClick={onButtonFormAssigneeSubmit} color="primary">
-                    Submit</Button>
-                </DialogActions>
-              </Dialog>
-            </Box>
-            <Box className={myClasses.userBox}>
-              <Typography variant="h6" className={classes.title}
-                classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Reporter</Typography>
-              <Avatar className={myClasses.avatar} classes={{ root: myClasses.muiAvatar }}>{reporter && <>{reporter[0].toUpperCase()} </>}</Avatar>
-              <Button onClick={() => setOpenButtonReporter(true)}>{reporter}</Button>
-              <Dialog disableBackdropClick disableEscapeKeyDown open={openButtonReporter}
-                onClose={() => setOpenButtonReporter(false)}>
-                <DialogContent>
-                  <form className={myClasses.formContainer}>
-                    <FormControl className={myClasses.formControl}>
-                      <InputLabel htmlFor="demo-dialog-native">Reporter</InputLabel>
-                      <Select
-                        native
-                        value={reporter}
-                        onChange={(event: any) => setReporter(event.target.value)}
-                      >
-                        {project.members.map((item) => (
-                          <option key={item} value={item} style={{ color: 'black' }}>
-                            {item}
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </form>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={onButtonFormReporterClose} color="primary">
-                    Cancel</Button>
-                  <Button onClick={onButtonFormReporterSubmit} color="primary">
-                    Submit</Button>
-                </DialogActions>
-              </Dialog>
-            </Box>
-            <Box className={myClasses.userBox}>
-              <Typography variant="h6" className={classes.title}
-                classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Label</Typography>
-              <Button onClick={handleClickOpenLabel} classes={{ root: myClasses.alignLeftLabel }}>{label}</Button>
-              <Dialog disableBackdropClick disableEscapeKeyDown open={openButtonLabel} onClose={handleCloseLabel}>
-                <DialogContent>
-                  <form className={myClasses.formContainer}>
-                    <FormControl className={myClasses.formControl}>
-                      <InputLabel htmlFor="demo-dialog-native">Label</InputLabel>
-                      <Select
-                        native
-                        value={label}
-                        onChange={(event: any) => setLabel(event.target.value)}
-                      >
-                        {labels.map((item) => (
-                          <option key={item} value={item} style={{ color: 'black' }}>
-                            {item}
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </form>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={onButtonFormLabelClose} color="primary">
-                    Cancel</Button>
-                  <Button onClick={onButtonFormLabelSubmit} color="primary">
-                    Submit</Button>
-                </DialogActions>
-              </Dialog>
-            </Box>
-            <Box className={myClasses.userBox}>
-              <Typography variant="h6" className={classes.title}
-                classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Estimate</Typography>
-              <InputBase
-                defaultValue={estimate}
-                inputProps={{ 'aria-label': 'naked' }}
-                classes={{ root: myClasses.alignLeftEstimate }}
-                onChange={(event: any) => setEstimate(event.target.value)}
+        <form onSubmit={saveTask}>
+          <Grid container spacing={4} alignItems='flex-end' classes={{ root: myClasses.gridPadding }}>
+            <Grid item xs={7} classes={{ root: myClasses.description }}>
+              <Typography variant="h6" className={classes.title}>Description</Typography>
+              <TextField
+                value={description}
+                onChange={(event: any) => setDescription(event.target.value)}
+                placeholder="Describe the business logic of the project"
+                className={classes.descriptionContentWrapper}
+                variant="outlined"
+                multiline
+                rows={7}
+                rowsMax={9}
+                color="secondary"
               />
-            </Box>
+            </Grid>
+            <Grid item xs={5}>
+              <Box className={myClasses.userBox}>
+                <Typography variant="h6" className={classes.title}
+                  classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Assignee</Typography>
+                <Avatar className={myClasses.avatar} classes={{ root: myClasses.muiAvatar }}>{assignee && <>{assignee[0].toUpperCase()} </>}</Avatar>
+                <Button onClick={() => setOpenButtonAssignee(true)}>{assignee}</Button>
+                <Dialog disableBackdropClick disableEscapeKeyDown open={openButtonAssignee}
+                  onClose={() => setOpenButtonAssignee(false)}>
+                  <DialogContent>
+                    <form className={myClasses.formContainer}>
+                      <FormControl className={myClasses.formControl}>
+                        <InputLabel htmlFor="demo-dialog-native">Assignee</InputLabel>
+                        <Select
+                          native
+                          value={assignee}
+                          onChange={(event: any) => setAssignee(event.target.value)}
+                        >
+                          {project.members.map((item) => (
+                            <option key={item} value={item} style={{ color: 'black' }}>
+                              {item}
+                            </option>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </form>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={onButtonFormAssigneeClose} color="primary">
+                      Cancel</Button>
+                    <Button onClick={onButtonFormAssigneeSubmit} color="primary">
+                      Submit</Button>
+                  </DialogActions>
+                </Dialog>
+              </Box>
+              <Box className={myClasses.userBox}>
+                <Typography variant="h6" className={classes.title}
+                  classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Reporter</Typography>
+                <Avatar className={myClasses.avatar} classes={{ root: myClasses.muiAvatar }}>{reporter && <>{reporter[0].toUpperCase()} </>}</Avatar>
+                <Button onClick={() => setOpenButtonReporter(true)}>{reporter}</Button>
+                <Dialog disableBackdropClick disableEscapeKeyDown open={openButtonReporter}
+                  onClose={() => setOpenButtonReporter(false)}>
+                  <DialogContent>
+                    <form className={myClasses.formContainer}>
+                      <FormControl className={myClasses.formControl}>
+                        <InputLabel htmlFor="demo-dialog-native">Reporter</InputLabel>
+                        <Select
+                          native
+                          value={reporter}
+                          onChange={(event: any) => setReporter(event.target.value)}
+                        >
+                          {project.members.map((item) => (
+                            <option key={item} value={item} style={{ color: 'black' }}>
+                              {item}
+                            </option>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </form>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={onButtonFormReporterClose} color="primary">
+                      Cancel</Button>
+                    <Button onClick={onButtonFormReporterSubmit} color="primary">
+                      Submit</Button>
+                  </DialogActions>
+                </Dialog>
+              </Box>
+              <Box className={myClasses.userBox}>
+                <Typography variant="h6" className={classes.title}
+                  classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Label</Typography>
+                <Button onClick={handleClickOpenLabel} classes={{ root: myClasses.alignLeftLabel }}>{label}</Button>
+                <Dialog disableBackdropClick disableEscapeKeyDown open={openButtonLabel} onClose={handleCloseLabel}>
+                  <DialogContent>
+                    <form className={myClasses.formContainer}>
+                      <FormControl className={myClasses.formControl}>
+                        <InputLabel htmlFor="demo-dialog-native">Label</InputLabel>
+                        <Select
+                          native
+                          value={label}
+                          onChange={(event: any) => setLabel(event.target.value)}
+                        >
+                          {labels.map((item) => (
+                            <option key={item} value={item} style={{ color: 'black' }}>
+                              {item}
+                            </option>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </form>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={onButtonFormLabelClose} color="primary">
+                      Cancel</Button>
+                    <Button onClick={onButtonFormLabelSubmit} color="primary">
+                      Submit</Button>
+                  </DialogActions>
+                </Dialog>
+              </Box>
+              <Box className={myClasses.userBox}>
+                <Typography variant="h6" className={classes.title}
+                  classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Estimate</Typography>
+                <InputBase
+                  defaultValue={estimate}
+                  inputProps={{ 'aria-label': 'naked' }}
+                  classes={{ root: myClasses.alignLeftEstimate }}
+                  onChange={(event: any) => setEstimate(event.target.value)}
+                />
+              </Box>
+            </Grid>
+            <Activities value={value} onChange={handleChange} comments={task.comments} history={task.history} project={project} />
+            <Grid item xs={5}>
+              <Button type="submit" variant="contained" size="large" classes={{ root: myClasses.button }}>
+                Submit</Button>
+            </Grid>
           </Grid>
-          <Activities value={value} onChange={handleChange} comments={task.comments} history={task.history} project={project} />
-          <Grid item xs={5}>
-            <Button onClick={saveTask} variant="contained" size="large" classes={{ root: myClasses.button }}>
-              Submit</Button>
-          </Grid>
-        </Grid>
+        </form>
       </DialogContent>
     </Dialog >
   );
