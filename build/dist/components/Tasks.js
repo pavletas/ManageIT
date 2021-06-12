@@ -11,13 +11,15 @@ const useStyles = makeStyles(() => ({
     alignItems: "center"
   }
 }));
-export default function Tasks({label, tasks}) {
+export default function Tasks({label, tasks, project}) {
   const classes = useStyles();
   const currentTasks = tasks.filter((task) => task.label === label);
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Typography, {
     variant: "h6",
     className: classes.label
   }, label), currentTasks.map((task) => /* @__PURE__ */ React.createElement(Task, {
-    task
+    task,
+    project,
+    tasks
   })));
 }

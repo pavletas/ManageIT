@@ -1,7 +1,6 @@
 import React from "../_snowpack/pkg/react.js";
 import {
   BrowserRouter,
-  Redirect,
   Switch
 } from "../_snowpack/pkg/react-router-dom.js";
 import Login from "./pages/Login.js";
@@ -39,8 +38,6 @@ function App() {
     exact: true,
     path: "/task",
     component: TaskForm
-  }), /* @__PURE__ */ React.createElement(Redirect, {
-    to: "/"
   })))));
 }
 export default App;

@@ -1,4 +1,19 @@
-export const users = [];
+export const users = [{
+  username: "Yoanna",
+  email: "anni@gmail.com",
+  password: "test123456",
+  type: "sa"
+}, {
+  username: "Maria",
+  email: "mimi@gmail.com",
+  password: "test123456",
+  type: "qa"
+}, {
+  username: "Pavleta",
+  email: "pufi@gmail.com",
+  password: "test123456",
+  type: "dev"
+}];
 class AuthService {
   constructor() {
     this.handler = null;

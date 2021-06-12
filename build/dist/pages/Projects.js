@@ -2,10 +2,10 @@ import React, {useState} from "../../_snowpack/pkg/react.js";
 import {makeStyles, Container, Button} from "../../_snowpack/pkg/@material-ui/core.js";
 import Project from "../components/Project.js";
 import CreateProjectForm from "./CreateProjectForm.js";
-import {v4 as uuidv4} from "../../_snowpack/pkg/uuid.js";
+import useCurrentUser from "../contexts/CurrentUser.js";
 export let projects = [
   {
-    id: uuidv4(),
+    id: "1",
     title: "Cinema Reservation",
     description: "This is a reservation system that will allow you to make reservations for the newest movies in the cinema. You can register into the system with a valid email and password. Without registration, you can only see the movies and projections.",
     edited: "Last updated 3 min ago",
@@ -19,7 +19,7 @@ export let projects = [
       reporter: "Mariya Petrova",
       label: "New",
       estimated: "4d",
-      comments: [],
+      comments: ["I cannot find the mockup for login page :("],
       history: []
     }, {
       id: "112",
@@ -104,7 +104,7 @@ export let projects = [
     }]
   },
   {
-    id: uuidv4(),
+    id: "2",
     title: "Dungeons And Pythons",
     description: "This is a simple 2D, turn-based console game filled with dungeons and pythons. There are a hero, enemies, weapons, treasures, and magic! There is an uncomplicated UI where the user can move his hero, take treasures, and fight with the enemies. When he fights all enemies on his path to the end of the dungeon, he will reach the next level or wins the game.",
     edited: "Last updated 1 day ago",
@@ -133,7 +133,7 @@ export let projects = [
     }]
   },
   {
-    id: uuidv4(),
+    id: "3",
     title: "Belote Declarations",
     description: "Belote is one of the most popular games in Bulgaria. That is just a part of its implementation - the possible declarations in the first trick and the scores generated. The program imitates a game of Belote where the scores are generated only from the declarations of the players.",
     edited: "Last updated 2 hours ago",
@@ -162,7 +162,7 @@ export let projects = [
     }]
   },
   {
-    id: uuidv4(),
+    id: "4",
     title: "What Now",
     description: "Web application for managing tasks of different software projects.",
     edited: "Last updated 10 min ago",
@@ -191,7 +191,7 @@ export let projects = [
     }]
   },
   {
-    id: uuidv4(),
+    id: "5",
     title: "BeerShow",
     description: "Beer show is a mobile application where you can find any kind of beer just with one shoot.",
     edited: "Last updated 1 day ago",
@@ -242,6 +242,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Projects() {
   const classes = useStyles();
+  const user = useCurrentUser();
   const [newProject, setNewProject] = useState(false);
   const handleCloseDialog = () => {
     setNewProject(false);
@@ -251,14 +252,14 @@ export default function Projects() {
   };
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Container, {
     maxWidth: "lg"
-  }, /* @__PURE__ */ React.createElement(Button, {
+  }, user?.type === "sa" && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Button, {
     size: "large",
     onClick: handleOpenDialog,
     className: classes.button
   }, "Add new project"), /* @__PURE__ */ React.createElement(CreateProjectForm, {
     open: newProject,
     onClose: handleCloseDialog
-  }), /* @__PURE__ */ React.createElement("div", {
+  })), /* @__PURE__ */ React.createElement("div", {
     className: classes.projects
   }, projects && projects.map((project) => /* @__PURE__ */ React.createElement(Project, {
     key: project.id,

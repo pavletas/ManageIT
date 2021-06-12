@@ -112,7 +112,7 @@ export default function EditTaskForm({ open, onClose, project }: taskFormProps) 
     const [openButtonAssignee, setOpenButtonAssignee] = React.useState(false);
 
     const closeAndCleanUp = () => {
-
+        setParamsToEmpty();
         onClose();
     }
 
@@ -123,9 +123,29 @@ export default function EditTaskForm({ open, onClose, project }: taskFormProps) 
     }
 
     const saveTask = (event: any) => {
+        event.preventDefault();
+        project.tasks.push({
+            id: Math.floor(Math.random() * (999 - 100 + 1) + 100) + '',
+            title: title,
+            description: description,
+            asignee: assignee,
+            reporter: reporter,
+            label: label,
+            estimated: estimate,
+            comments: [],
+            history: []
+        });
 
+        setParamsToEmpty();
         onClose();
     };
+
+    const setParamsToEmpty = () => {
+        setDescription('');
+        setTitle('');
+        setAssignee('');
+        setEstimate('');
+    }
 
     return (
         <Dialog open={open} onClose={closeAndCleanUp} maxWidth="md" classes={{ paper: classes.dialogWrapper }}>

@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
     padding: "0 1px"
   }
 }));
-export default function Task({task}) {
+export default function Task({task, project, tasks}) {
   const classes = useStyles();
   const [taskToEdit, setTaskToEdit] = useState(false);
   const handleCloseDialog = () => {
@@ -51,6 +51,8 @@ export default function Task({task}) {
   }, task.asignee[0].toLocaleUpperCase())), /* @__PURE__ */ React.createElement(TaskForm, {
     open: taskToEdit,
     onClose: handleCloseDialog,
-    task
+    task,
+    project,
+    tasks
   }));
 }

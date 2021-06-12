@@ -38,7 +38,7 @@ export default function Signup() {
   const history = useHistory();
   async function submit(event) {
     event.preventDefault();
-    authService.register({username, email, password});
+    authService.register({username, email, password, type: "dev"});
     history.push(history.location.state?.from || "/");
   }
   return /* @__PURE__ */ React.createElement(Container, {

@@ -35,8 +35,8 @@ export default function Login() {
     event.preventDefault();
     const user = users.filter((user2) => user2.username === username);
     const email = user.length ? user[0].email : null;
-    authService.login({username, email, password});
-    console.log(username, email, password);
+    const type = user.length ? user[0].type : null;
+    authService.login({username, email, password, type});
     history.push(history.location.state?.from || "/");
   }
   return /* @__PURE__ */ React.createElement(Container, {

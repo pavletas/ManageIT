@@ -2,7 +2,6 @@ import {Button, Dialog, DialogActions, DialogContent, FormControl, Grid, IconBut
 import CloseIcon from "../../_snowpack/pkg/@material-ui/icons/Close.js";
 import React, {useState} from "../../_snowpack/pkg/react.js";
 import {projects} from "./Projects.js";
-import {v4 as uuidv4} from "../../_snowpack/pkg/uuid.js";
 export const useStyles = makeStyles((theme) => ({
   dialogWrapper: {
     paddingBottom: "10px",
@@ -81,7 +80,7 @@ export default function CreateProjectForm({open, onClose}) {
   const saveProject = (event) => {
     event.preventDefault();
     projects.push({
-      id: uuidv4(),
+      id: Math.floor(Math.random() * (999 - 100 + 1) + 100) + "",
       title: projectName,
       description,
       edited: "Last updated 2 sec ago",
