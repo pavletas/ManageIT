@@ -2,7 +2,6 @@ import { Button, Dialog, DialogActions, DialogContent, FormControl, Grid, IconBu
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useState } from "react";
 import { projects } from './Projects';
-import { v4 as uuidv4 } from 'uuid';
 
 export interface formProps {
     open: boolean;
@@ -105,7 +104,7 @@ export default function CreateProjectForm({ open, onClose }: formProps) {
         setParamsToEmpty();
         onClose();
     };
-    
+
     const closeAndCleanUp = () => {
         setParamsToEmpty();
         onClose();
@@ -190,7 +189,7 @@ export default function CreateProjectForm({ open, onClose }: formProps) {
             <DialogActions>
                 <Button variant="contained" size="large" className={classes.button} onClick={saveProject}>
                     Submit
-        </Button>
+                </Button>
             </DialogActions>
         </Dialog>
     );

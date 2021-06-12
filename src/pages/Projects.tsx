@@ -256,7 +256,6 @@ export default function Projects() {
     setNewProject(true);
   };
 
-  console.log(user?.type);
   return (
     <>
       <Container maxWidth="lg">
