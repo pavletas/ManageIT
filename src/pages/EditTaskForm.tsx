@@ -1,9 +1,13 @@
-import { Avatar, Box, Dialog, DialogContent, Grid, IconButton, makeStyles, TextField, Typography, InputBase, FormControl, Select, Button, DialogTitle, InputLabel, DialogActions, Input } from "@material-ui/core";
+import {
+    Avatar, Box, Dialog, DialogContent, Grid, IconButton, makeStyles,
+    TextField, Typography, InputBase, FormControl, Select, Button,
+    InputLabel, DialogActions, Tab, Tabs
+} from "@material-ui/core";
 import React, { useState } from "react";
 import CloseIcon from '@material-ui/icons/Close';
 import { useStyles } from "./CreateProjectForm";
 import type { ProjectProps, TaskModel } from "../components/Project";
-import Comment from "../components/Comment";
+import useCurrentUser from "../contexts/CurrentUser";
 
 export interface taskFormProps {
     open: boolean;
@@ -82,6 +86,16 @@ const useCustomStyles = makeStyles((theme) => ({
             backgroundColor: '#dba0be'
         }
     },
+    tab: {
+        borderRadius: '50px'
+    },
+    customInput: {
+        borderRadius: '4px',
+        width: '67%',
+        left: '1rem',
+        position: 'absolute',
+        padding: '0.3rem'
+    }
 }));
 
 export default function EditTaskForm({ open, onClose, task, project }: taskFormProps) {
@@ -97,6 +111,9 @@ export default function EditTaskForm({ open, onClose, task, project }: taskFormP
     const [history, setHistory] = useState(task.history);
     const [comments, setComments] = useState(task.comments);
     const [openButtonLabel, setOpenButtonLabel] = React.useState(false);
+    const [openButtonReporter, setOpenButtonReporter] = React.useState(false);
+    const [openButtonAssignee, setOpenButtonAssignee] = React.useState(false);
+    const user = useCurrentUser();
 
     const labels: string[] = ['New', 'In Progress', 'Ready For Code Review', 'Ready For Testing', 'In Testing', 'Closed'];
 
@@ -110,27 +127,57 @@ export default function EditTaskForm({ open, onClose, task, project }: taskFormP
         onClose();
     }
 
-    const handleClickOpen = () => {
+    const handleClickOpenLabel = () => {
         setOpenButtonLabel(true);
     };
 
-    const handleClose = () => {
+    const handleCloseLabel = () => {
         setOpenButtonLabel(false);
     };
 
-    const onButtonFormClose = (event: any) => {
+    const onButtonFormLabelClose = (event: any) => {
         event.preventDefault();
         let returnedtask: TaskModel = project.tasks.filter(item => item.id === id)[0];
         setLabel(returnedtask.label);
-        handleClose();
+        handleCloseLabel();
     }
 
-    const onButtonFormSubmit = (event: any) => {
+    const onButtonFormLabelSubmit = (event: any) => {
         event.preventDefault();
         let returnedtask: TaskModel = project.tasks.filter(item => item.id === id)[0];
         returnedtask.label = label;
         setLabel(label);
-        handleClose();
+        handleCloseLabel();
+    }
+
+    const onButtonFormReporterClose = (event: any) => {
+        event.preventDefault();
+        let returnedtask: TaskModel = project.tasks.filter(item => item.id === id)[0];
+        setReporter(returnedtask.reporter);
+        setOpenButtonReporter(false);
+    }
+
+    const onButtonFormReporterSubmit = (event: any) => {
+        event.preventDefault();
+        let returnedtask: TaskModel = project.tasks.filter(item => item.id === id)[0];
+        returnedtask.reporter = reporter;
+        setReporter(reporter);
+        setOpenButtonReporter(false);
+    }
+
+    const onButtonFormAssigneeClose = (event: any) => {
+        event.preventDefault();
+        let returnedtask: TaskModel = project.tasks.filter(item => item.id === id)[0];
+        setAssignee(returnedtask.asignee);
+        setOpenButtonAssignee(false);
+    }
+
+    const onButtonFormAssigneeSubmit = (event: any) => {
+        event.preventDefault();
+        let returnedtask: TaskModel = project.tasks.filter(item => item.id === id)[0];
+        returnedtask.asignee = assignee;
+        setAssignee(assignee);
+        setOpenButtonAssignee(false);
     }
 
     const saveTask = (event: any) => {
@@ -172,27 +219,73 @@ export default function EditTaskForm({ open, onClose, task, project }: taskFormP
                             <Typography variant="h6" className={classes.title}
                                 classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Assignee</Typography>
                             <Avatar className={myClasses.avatar} classes={{ root: myClasses.muiAvatar }}>{assignee && <>{assignee[0].toUpperCase()} </>}</Avatar>
-                            <InputBase
-                                defaultValue={assignee}
-                                inputProps={{ 'aria-label': 'naked' }}
-                                onChange={(event: any) => setAssignee(event.target.value)}
-                            />
+                            <Button onClick={() => setOpenButtonAssignee(true)}>{assignee}</Button>
+                            <Dialog disableBackdropClick disableEscapeKeyDown open={openButtonAssignee}
+                                onClose={() => setOpenButtonAssignee(false)}>
+                                <DialogContent>
+                                    <form className={myClasses.formContainer}>
+                                        <FormControl className={myClasses.formControl}>
+                                            <InputLabel htmlFor="demo-dialog-native">Assignee</InputLabel>
+                                            <Select
+                                                native
+                                                value={assignee}
+                                                onChange={(event: any) => setAssignee(event.target.value)}
+                                            >
+                                                {project.members.map((item) => (
+                                                    <option key={item} value={item} style={{ color: 'black' }}>
+                                                        {item}
+                                                    </option>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </form>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={onButtonFormAssigneeClose} color="primary">
+                                        Cancel</Button>
+                                    <Button onClick={onButtonFormAssigneeSubmit} color="primary">
+                                        Submit</Button>
+                                </DialogActions>
+                            </Dialog>
                         </Box>
                         <Box className={myClasses.userBox}>
                             <Typography variant="h6" className={classes.title}
                                 classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Reporter</Typography>
                             <Avatar className={myClasses.avatar} classes={{ root: myClasses.muiAvatar }}>{reporter && <>{reporter[0].toUpperCase()} </>}</Avatar>
-                            <InputBase
-                                defaultValue={reporter}
-                                inputProps={{ 'aria-label': 'naked' }}
-                                onChange={(event: any) => setReporter(event.target.value)}
-                            />
+                            <Button onClick={() => setOpenButtonReporter(true)}>{reporter}</Button>
+                            <Dialog disableBackdropClick disableEscapeKeyDown open={openButtonReporter}
+                                onClose={() => setOpenButtonReporter(false)}>
+                                <DialogContent>
+                                    <form className={myClasses.formContainer}>
+                                        <FormControl className={myClasses.formControl}>
+                                            <InputLabel htmlFor="demo-dialog-native">Reporter</InputLabel>
+                                            <Select
+                                                native
+                                                value={reporter}
+                                                onChange={(event: any) => setReporter(event.target.value)}
+                                            >
+                                                {project.members.map((item) => (
+                                                    <option key={item} value={item} style={{ color: 'black' }}>
+                                                        {item}
+                                                    </option>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </form>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={onButtonFormReporterClose} color="primary">
+                                        Cancel</Button>
+                                    <Button onClick={onButtonFormReporterSubmit} color="primary">
+                                        Submit</Button>
+                                </DialogActions>
+                            </Dialog>
                         </Box>
                         <Box className={myClasses.userBox}>
                             <Typography variant="h6" className={classes.title}
                                 classes={{ h6: myClasses.header, root: myClasses.muiMargin }}>Label</Typography>
-                            <Button onClick={handleClickOpen} classes={{ root: myClasses.alignLeftLabel }}>{label}</Button>
-                            <Dialog disableBackdropClick disableEscapeKeyDown open={openButtonLabel} onClose={handleClose}>
+                            <Button onClick={handleClickOpenLabel} classes={{ root: myClasses.alignLeftLabel }}>{label}</Button>
+                            <Dialog disableBackdropClick disableEscapeKeyDown open={openButtonLabel} onClose={handleCloseLabel}>
                                 <DialogContent>
                                     <form className={myClasses.formContainer}>
                                         <FormControl className={myClasses.formControl}>
@@ -212,9 +305,9 @@ export default function EditTaskForm({ open, onClose, task, project }: taskFormP
                                     </form>
                                 </DialogContent>
                                 <DialogActions>
-                                    <Button onClick={onButtonFormClose} color="primary">
+                                    <Button onClick={onButtonFormLabelClose} color="primary">
                                         Cancel</Button>
-                                    <Button onClick={onButtonFormSubmit} color="primary">
+                                    <Button onClick={onButtonFormLabelSubmit} color="primary">
                                         Submit</Button>
                                 </DialogActions>
                             </Dialog>
@@ -232,16 +325,13 @@ export default function EditTaskForm({ open, onClose, task, project }: taskFormP
                     </Grid>
                     <Grid item xs={7} classes={{ root: myClasses.description }}>
                         <Typography variant="h6" className={classes.title}>Activity</Typography>
-                        <TextField
-                            value={comments}
-                            onChange={(event: any) => setComments(event.target.value)}
-                            className={classes.descriptionContentWrapper}
-                            variant="outlined"
-                            multiline
-                            rows={7}
-                            rowsMax={9}
-                            color="secondary"
-                        />
+                        <Tabs
+                            indicatorColor="primary">
+                            <Tab label="Comments" classes={{ root: myClasses.tab }} />
+                            <Tab label="History" classes={{ root: myClasses.tab }} />
+                        </Tabs>
+                        <Avatar className={myClasses.avatar} classes={{ root: myClasses.muiAvatar }}>{user && <>{user?.username[0].toUpperCase()} </>}</Avatar>
+                        <input type="text" id="comment" name="comment" placeholder="Add a comment.." className={myClasses.customInput} />
                     </Grid>
                     <Grid item xs={5}>
                         <Button onClick={saveTask} variant="contained" size="large" classes={{ root: myClasses.button }}>

@@ -26,7 +26,7 @@ function App() {
             <PrivateRoute exact path="/projects" component={Projects} />
             <PrivateRoute exact path="/:id/dashboard" component={Dashboard} />
             <PrivateRoute exact path="/task" component={TaskForm} />
-            <Redirect to="/" />
+            
           </Switch>
         </ManageITThemeProvider>
       </CurrentUserProvider>
