@@ -1,7 +1,6 @@
 {
   "imports": {
     "@material-ui/core": "./@material-ui/core.js",
-    "@material-ui/icons": "./@material-ui/icons.js",
     "@material-ui/icons/Close": "./@material-ui/icons/Close.js",
     "@material-ui/icons/Edit": "./@material-ui/icons/Edit.js",
     "@material-ui/icons/Menu": "./@material-ui/icons/Menu.js",

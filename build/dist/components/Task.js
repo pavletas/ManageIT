@@ -27,9 +27,14 @@ const useStyles = makeStyles(() => ({
     padding: "0 1px"
   }
 }));
-export default function Task({task, project, tasks}) {
+export default function Task({task, project, tasks, onChange}) {
   const classes = useStyles();
   const [taskToEdit, setTaskToEdit] = useState(false);
+  const [value, setValue] = React.useState("");
+  function handleChange(newValue) {
+    onChange(newValue);
+    setValue(newValue);
+  }
   const handleCloseDialog = () => {
     setTaskToEdit(false);
   };
@@ -50,6 +55,8 @@ export default function Task({task, project, tasks}) {
     className: classes.avatar
   }, task.asignee[0].toLocaleUpperCase())), /* @__PURE__ */ React.createElement(TaskForm, {
     open: taskToEdit,
+    value,
+    onChange: handleChange,
     onClose: handleCloseDialog,
     task,
     project,

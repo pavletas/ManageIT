@@ -18,8 +18,6 @@ import {
 import React, {useState} from "../../_snowpack/pkg/react.js";
 import CloseIcon from "../../_snowpack/pkg/@material-ui/icons/Close.js";
 import {useStyles} from "./CreateProjectForm.js";
-import useCurrentUser from "../contexts/CurrentUser.js";
-import {projects} from "./Projects.js";
 import Activities from "../components/Activities.js";
 ;
 const useCustomStyles = makeStyles((theme) => ({
@@ -118,7 +116,7 @@ const useCustomStyles = makeStyles((theme) => ({
     height: "40px"
   }
 }));
-export default function EditTaskForm({open, onClose, task, project, tasks}) {
+export default function EditTaskForm({open, onClose, task, project, tasks, onChange}) {
   const classes = useStyles();
   const myClasses = useCustomStyles();
   const [id] = useState(task.id);
@@ -128,14 +126,10 @@ export default function EditTaskForm({open, onClose, task, project, tasks}) {
   const [reporter, setReporter] = useState(task.reporter);
   const [label, setLabel] = useState(task.label);
   const [estimate, setEstimate] = useState(task.estimated);
-  const [history, setHistory] = useState(task.history);
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState(task.comments);
   const [openButtonLabel, setOpenButtonLabel] = React.useState(false);
   const [openButtonReporter, setOpenButtonReporter] = React.useState(false);
   const [openButtonAssignee, setOpenButtonAssignee] = React.useState(false);
   const [value, setValue] = React.useState("");
-  const user = useCurrentUser();
   function handleChange(newValue) {
     setValue(newValue);
   }
@@ -197,18 +191,14 @@ export default function EditTaskForm({open, onClose, task, project, tasks}) {
   const saveTask = (event) => {
     event.preventDefault();
     let returnedTask = project.tasks.filter((item) => item.id === id)[0];
-    let taskIndex = tasks.indexOf(returnedTask);
+    console.log("here save");
     returnedTask.description = description;
     returnedTask.asignee = assignee;
     returnedTask.reporter = reporter;
     returnedTask.estimated = estimate;
     returnedTask.label = label;
-    let filteredProject = projects.filter((item) => item.id === project.id)[0];
-    let projectIndex = projects.indexOf(filteredProject);
-    projects[projectIndex].tasks.slice(taskIndex, 1);
-    projects[projectIndex].tasks.push(returnedTask);
+    onChange(event);
     onClose();
-    window.location.reload();
   };
   return /* @__PURE__ */ React.createElement(Dialog, {
     open,
@@ -225,6 +215,8 @@ export default function EditTaskForm({open, onClose, task, project, tasks}) {
     onClick: closeAndCleanUp
   }, /* @__PURE__ */ React.createElement(CloseIcon, null)), /* @__PURE__ */ React.createElement(DialogContent, {
     className: classes.contentWrapper
+  }, /* @__PURE__ */ React.createElement("form", {
+    onSubmit: saveTask
   }, /* @__PURE__ */ React.createElement(Grid, {
     container: true,
     spacing: 4,
@@ -377,9 +369,9 @@ export default function EditTaskForm({open, onClose, task, project, tasks}) {
     item: true,
     xs: 5
   }, /* @__PURE__ */ React.createElement(Button, {
-    onClick: saveTask,
+    type: "submit",
     variant: "contained",
     size: "large",
     classes: {root: myClasses.button}
-  }, "Submit")))));
+  }, "Submit"))))));
 }

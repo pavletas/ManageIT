@@ -116,6 +116,7 @@ export default function EditTaskForm({open, onClose, project}) {
   const [estimate, setEstimate] = useState("");
   const [openButtonAssignee, setOpenButtonAssignee] = React.useState(false);
   const closeAndCleanUp = () => {
+    setParamsToEmpty();
     onClose();
   };
   const onButtonFormAssigneeSubmit = (event) => {
@@ -124,7 +125,26 @@ export default function EditTaskForm({open, onClose, project}) {
     setOpenButtonAssignee(false);
   };
   const saveTask = (event) => {
+    event.preventDefault();
+    project.tasks.push({
+      id: Math.floor(Math.random() * (999 - 100 + 1) + 100) + "",
+      title,
+      description,
+      asignee: assignee,
+      reporter,
+      label,
+      estimated: estimate,
+      comments: [],
+      history: []
+    });
+    setParamsToEmpty();
     onClose();
+  };
+  const setParamsToEmpty = () => {
+    setDescription("");
+    setTitle("");
+    setAssignee("");
+    setEstimate("");
   };
   return /* @__PURE__ */ React.createElement(Dialog, {
     open,
@@ -240,6 +260,7 @@ export default function EditTaskForm({open, onClose, project}) {
     item: true,
     xs: 5
   }, /* @__PURE__ */ React.createElement(Button, {
+    type: "submit",
     onClick: saveTask,
     variant: "contained",
     size: "large",

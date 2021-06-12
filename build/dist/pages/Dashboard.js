@@ -52,6 +52,10 @@ export default function Dashboard() {
   const classes = useStyles();
   const {id} = useParams();
   const [taskToCreate, setTaskToCreate] = useState(false);
+  const [value, setValue] = React.useState("");
+  function handleChange(newValue) {
+    setValue(newValue);
+  }
   const currentProject = projects.filter((project) => project.id === id)[0];
   let [tasks, setTasks] = useState(currentProject.tasks);
   const handleOpenDialog = () => {
@@ -88,12 +92,14 @@ export default function Dashboard() {
     "Ready For Testing",
     "In Testing",
     "Closed"
-  ].map((value) => /* @__PURE__ */ React.createElement(Grid, {
-    key: value,
+  ].map((value2) => /* @__PURE__ */ React.createElement(Grid, {
+    key: value2,
     item: true,
     className: classes.tasks
   }, /* @__PURE__ */ React.createElement(Tasks, {
-    label: value,
+    value: value2,
+    onChange: handleChange,
+    label: value2,
     tasks,
     project: currentProject
   })))))));
