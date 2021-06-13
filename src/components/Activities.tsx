@@ -85,6 +85,8 @@ export default function Activities({ comments, history, onChange, project }: act
 
   const handleKeyPress = (e: any) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
+
       comments.push(comment);
       setNewComments(comments);
       onChange(value);
